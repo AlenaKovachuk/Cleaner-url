@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чистильщик ссылок</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="domain-form">
+            <h2>Чистильщик ссылок</h2>
+            <p style="font-size: 14px; color: #666;">Удаляет UTM-трекеры и проверяет опасные домены</p>
+            
+            <form method="POST">
+                <label for="url">Введите ссылку:</label>
+                <input type="text" id="url" name="url" placeholder="https://example.com?utm_source=ads&id=123" required>
+                <button type="submit">Очистить и проверить</button>
+            </form>
+        </div>
+
+        {% if result %}
+        <div class="result-container">
+            <div class="result-section">
+                <h3>📎 Оригинальная ссылка:</h3>
+                <p>{{ result['original'] }}</p>
+            </div>
+
+            <div class="result-section">
+                <h3>Очищенная ссылка:</h3>
+                <p><strong>{{ result['cleaned'] }}</strong></p>
+                {% if result['trackers_removed'] > 0 %}
+                    <p style="color: green;">✓ Удалено трекеров: {{ result['trackers_removed'] }}</p>
+                {% else %}
+                    <p style="color: gray;">✓ Трекеров не найдено</p>
+                {% endif %}
+            </div>
+
+            <div class="result-section">
+                <h3>Проверка безопасности:</h3>
+                <p>{{ result['safety'] }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
